@@ -2,57 +2,15 @@ package app.spotygram
 
 import org.json.JSONObject
 
-data class Track(
-    val id: String,
-    val chatId: Long,
-    val messageId: Long,
-    val fileId: Int,
-    val title: String,
-    val artist: String,
-    val duration: Int,
-    val size: Long,
-    val source: String,
-    val date: Long,
-    val art: String = "",
-    val path: String = "",
-    val liked: Boolean = false,
-    val available: Boolean = true,
-    val document: Boolean = false,
-    val fileKey: String = "",
-    val remoteId: String = "",
-    val saved: Boolean = chatId == 0L,
-    val temporary: Boolean = false,
-    val profileUserId: Long = 0,
-    val profilePosition: Int = -1,
-    val inLibrary: Boolean = true,
-) {
-    val local
-        get() = path.isNotEmpty()
+val Track.subtitle: String
+    get() = artist.ifBlank {
+        if (imported) tr(R.string.from_device) else sourceTitle
+    }
 
-    val subtitle
-        get() = artist.ifBlank {
-            if (imported) tr(R.string.from_device) else sourceTitle
-        }
-
-    val imported
-        get() = chatId == 0L && profileUserId == 0L
-
-    val sourceKey
-        get() = if (profileUserId != 0L) "profile:$profileUserId" else "chat:$chatId"
-
-    val sourceTitle
-        get() =
-            if (profileUserId != 0L) tr(R.string.profile_music_named, source)
-            else chatTitle(chatId, source)
-
-    // Most searches need no temporary concatenated string. Keep cross-field phrases working.
-    fun matches(query: String): Boolean =
-        query.isEmpty() ||
-            title.contains(query, ignoreCase = true) ||
-            artist.contains(query, ignoreCase = true) ||
-            source.contains(query, ignoreCase = true) ||
-            (' ' in query && "$title $artist $source".contains(query, ignoreCase = true))
-}
+val Track.sourceTitle: String
+    get() =
+        if (profileUserId != 0L) tr(R.string.profile_music_named, source)
+        else chatTitle(chatId, source)
 
 data class Source(
     val id: Long,
@@ -92,8 +50,6 @@ data class ChatChoice(val id: Long, val title: String) {
     val displayTitle
         get() = chatTitle(id, title)
 }
-
-data class Playlist(val id: Long, val name: String, val tracks: List<String>)
 
 data class LibraryState(
     val tracks: List<Track> = emptyList(),

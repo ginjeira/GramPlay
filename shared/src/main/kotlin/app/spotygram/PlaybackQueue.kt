@@ -258,18 +258,8 @@ class PlaybackQueue(private val app: SpotygramApp, private val exo: Player) {
         changed()
     }
 
-    private fun permutation(): List<Int> {
-        if (mode.order == PlaybackOrder.REVERSED) return ids.indices.reversed().toList()
-        val result = ids.indices.toMutableList()
-        if (mode.shuffle)
-            for (i in result.lastIndex downTo 1) {
-                val j = playbackRandom.nextInt(i + 1)
-                val old = result[i]
-                result[i] = result[j]
-                result[j] = old
-            }
-        return result
-    }
+    private fun permutation(): List<Int> =
+        playbackPermutation(ids.size, mode.order, playbackRandom::nextInt)
 
     private fun resetOrder(selected: Int) {
         if (mode.random) {
@@ -351,11 +341,6 @@ class PlaybackQueue(private val app: SpotygramApp, private val exo: Player) {
             editing = false
         }
     }
-
-    private fun normalizedRepeat(order: PlaybackOrder, repeat: Int) =
-        if (order == PlaybackOrder.RANDOM && repeat == Player.REPEAT_MODE_ALL)
-            Player.REPEAT_MODE_OFF
-        else repeat
 
     fun setMode(
         order: PlaybackOrder = mode.order,

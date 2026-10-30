@@ -27,3 +27,26 @@ data class QueueSnapshot(
     val current: Int,
     val next: Int = -1,
 )
+
+fun playbackPermutation(
+    size: Int,
+    order: PlaybackOrder,
+    nextInt: (Int) -> Int,
+): List<Int> {
+    if (size <= 0) return emptyList()
+    if (order == PlaybackOrder.REVERSED) return (size - 1 downTo 0).toList()
+    val result = (0 until size).toMutableList()
+    if (order.shuffled)
+        for (i in result.lastIndex downTo 1) {
+            val j = nextInt(i + 1)
+            val old = result[i]
+            result[i] = result[j]
+            result[j] = old
+        }
+    return result
+}
+
+fun normalizedRepeat(order: PlaybackOrder, repeat: Int): Int =
+    if (order == PlaybackOrder.RANDOM && repeat == Player.REPEAT_MODE_ALL)
+        Player.REPEAT_MODE_OFF
+    else repeat

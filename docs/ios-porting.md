@@ -5,9 +5,9 @@ Compose. Android and desktop still compile most of the application from a
 shared JVM source directory. The new `core` module is Kotlin Multiplatform and
 now contains platform-neutral playback contracts and state, track, playlist,
 source, profile, file, and download models, audio metadata, playback progress,
-playback-order models, and playback-speed rules for Android, desktop, and iOS
-targets. It exports a static `GramPlayCore` framework for iPhone and simulator
-architectures. There is no iOS app target yet.
+queue ordering, repeat normalization, and playback-speed rules for Android,
+desktop, and iOS targets. It exports a static `GramPlayCore` framework for
+iPhone and simulator architectures. There is no iOS app target yet.
 
 The `iOS core frameworks` GitHub Actions workflow builds the device and Apple
 silicon simulator frameworks on macOS whenever the core or its build setup
@@ -20,10 +20,11 @@ changes.
   JVM gzip and cryptography classes. These need multiplatform equivalents or
   platform interfaces before they can compile for iOS.
 - `Platform` and `Player` define useful host boundaries. Playback contracts,
-  state and library models, audio metadata, progress, and speed rules now live
-  in the Kotlin Multiplatform common source set; an iOS host still needs
-  implementations for files, preferences, SQLite, networking, URL handling,
-  background transfers, Telegram client, and actual audio.
+  state and library models, audio metadata, progress, queue ordering, and
+  playback-speed rules now live in the Kotlin Multiplatform common source set;
+  an iOS host still needs implementations for files, preferences, SQLite,
+  networking, URL handling, background transfers, Telegram client, and actual
+  audio.
 - Android currently provides TDLib through a native JNI build. iOS needs a
   separately built and packaged TDLib integration, including its native
   dependencies, lifecycle, and App Store compliance review.

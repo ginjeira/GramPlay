@@ -14,7 +14,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "spotygram"
+rootProject.name = "GramPlay"
 
 include(":desktop")
 if (!providers.gradleProperty("desktopOnly").orElse("false").get().toBoolean()) include(":app")

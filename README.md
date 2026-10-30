@@ -3,19 +3,21 @@
 </p>
 
 <p align="center">
-  <img src="docs/banner.png" alt="spotygram — Telegram music player with a pink Takopi plush" width="100%">
+  <img src="docs/banner.png" alt="Spotygram — Telegram music player with a pink Takopi plush" width="100%">
 </p>
 
 <p align="center">
-  <strong>A music player for Telegram chats, profile music and local files.</strong><br>
-  Android · Windows · Linux · macOS
+  <strong>GramPlay — a Telegram music player for chats, profile music and local files.</strong><br>
+  Android · Windows · Linux · macOS · iOS (in development)
 </p>
 
 <p align="center">
-  <a href="https://github.com/Krablante/spotygram/releases/latest"><strong>Download Spotygram</strong></a> ·
+  <a href="https://github.com/ginjeira/GramPlay"><strong>GramPlay</strong></a> ·
   <a href="docs/usage.md">User guide</a> ·
   <a href="docs/README.md">Documentation</a>
 </p>
+
+GramPlay is based on [Spotygram](https://github.com/Krablante/spotygram), distributed under the MIT License. This repository preserves the upstream copyright and license notices. iOS support is being developed; the existing shared application code currently targets Android and desktop.
 
 ## From a chat to a music library
 

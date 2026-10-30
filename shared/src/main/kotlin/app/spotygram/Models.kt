@@ -12,44 +12,11 @@ val Track.sourceTitle: String
         if (profileUserId != 0L) tr(R.string.profile_music_named, source)
         else chatTitle(chatId, source)
 
-data class Source(
-    val id: Long,
-    val title: String,
-    val cursor: Long = 0,
-    val complete: Boolean = false,
-    val documentCursor: Long = 0,
-    val documentsComplete: Boolean = false,
-    val newest: Long = 0,
-    val documentNewest: Long = 0,
-    val profile: Boolean = false,
-) {
-    val fullyIndexed
-        get() = complete && documentsComplete
+val Source.displayTitle: String
+    get() = if (profile) title else chatTitle(id, title)
 
-    val displayTitle
-        get() = if (profile) title else chatTitle(id, title)
-
-    val key
-        get() = if (profile) "profile:$id" else "chat:$id"
-}
-
-data class UserProfile(
-    val id: Long,
-    val title: String,
-    val username: String = "",
-    val photo: String = "",
-    val selected: Boolean = false,
-    val count: Int = 0,
-    val loadedAt: Long = 0,
-    val openedAt: Long = 0,
-) {
-    fun source() = Source(id, title, complete = true, documentsComplete = true, profile = true)
-}
-
-data class ChatChoice(val id: Long, val title: String) {
-    val displayTitle
-        get() = chatTitle(id, title)
-}
+val ChatChoice.displayTitle: String
+    get() = chatTitle(id, title)
 
 data class LibraryState(
     val tracks: List<Track> = emptyList(),
@@ -123,21 +90,6 @@ internal fun validAudioCopy(path: String, expectedSize: Long): Boolean {
     val length = file.length()
     return file.isFile && length > 0 && (expectedSize <= 0 || length == expectedSize)
 }
-
-data class FileState(
-    val id: Int,
-    val path: String,
-    val size: Long,
-    val downloaded: Long,
-    val offset: Long,
-    val prefix: Long,
-    val complete: Boolean,
-    val active: Boolean,
-    val key: String = "",
-    val remote: String = "",
-)
-
-data class DownloadState(val trackId: String = "", val progress: Float = 0f, val queued: Int = 0)
 
 fun json(type: String, vararg fields: Pair<String, Any?>) =
     JSONObject().put("@type", type).apply {

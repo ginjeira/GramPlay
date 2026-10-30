@@ -54,13 +54,6 @@ data class Track(
             (' ' in query && "$title $artist $source".contains(query, ignoreCase = true))
 }
 
-data class PlaybackProgress(
-    val position: Long,
-    val duration: Long,
-    val fileKey: String,
-    val size: Long,
-)
-
 data class Source(
     val id: Long,
     val title: String,

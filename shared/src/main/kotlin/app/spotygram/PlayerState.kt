@@ -4,38 +4,9 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
-import kotlin.math.roundToInt
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
-
-const val MIN_PLAYBACK_SPEED = 0.3f
-const val MAX_PLAYBACK_SPEED = 4f
-const val PLAYBACK_SPEED_STEP = 0.05f
-
-fun playbackSpeedStep(value: Float): Float =
-    ((value / PLAYBACK_SPEED_STEP).roundToInt() * PLAYBACK_SPEED_STEP).coerceIn(
-        MIN_PLAYBACK_SPEED,
-        MAX_PLAYBACK_SPEED,
-    )
-
-data class Playing(
-    val id: String = "",
-    val playing: Boolean = false,
-    val loading: Boolean = false,
-    val position: Long = 0,
-    val duration: Long = 0,
-    val order: PlaybackOrder = PlaybackOrder.ORDERED,
-    val repeat: Int = 0,
-    val speed: Float = 1f,
-    val volume: Float = 1f,
-) {
-    val shuffle
-        get() = order.shuffled
-
-    val random
-        get() = order == PlaybackOrder.RANDOM
-}
 
 @Composable
 fun observePlayer(player: Player?, positionUpdates: Boolean = false): Playing {

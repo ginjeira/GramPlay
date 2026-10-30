@@ -45,13 +45,6 @@ interface Platform {
     fun logPlaybackError(code: String)
 }
 
-data class AudioMetadata(
-    val duration: Long,
-    val title: String = "",
-    val artist: String = "",
-    val artwork: ByteArray? = null,
-)
-
 interface TdClient {
     fun createClientId(): Int
     fun send(client: Int, request: String)

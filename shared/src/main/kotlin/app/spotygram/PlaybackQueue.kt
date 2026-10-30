@@ -15,34 +15,6 @@ fun randomTrack(tracks: List<Track>): Track? {
 
 fun Track.mediaItem(): MediaItem = MediaItem(id, title, subtitle, art)
 
-enum class PlaybackOrder {
-    ORDERED,
-    REVERSED,
-    SHUFFLE,
-    RANDOM;
-
-    val shuffled
-        get() = this == SHUFFLE || this == RANDOM
-}
-
-data class PlaybackMode(
-    val order: PlaybackOrder = PlaybackOrder.ORDERED,
-    val repeat: Int = Player.REPEAT_MODE_OFF,
-) {
-    val shuffle
-        get() = order.shuffled
-
-    val random
-        get() = order == PlaybackOrder.RANDOM
-}
-
-data class QueueSnapshot(
-    val ids: List<String>,
-    val order: List<Int>,
-    val current: Int,
-    val next: Int = -1,
-)
-
 /** Shared queue rules; each engine receives only previous, current and next. */
 class PlaybackQueue(private val app: SpotygramApp, private val exo: Player) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)

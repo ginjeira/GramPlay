@@ -102,6 +102,7 @@ tasks.named("preBuild").configure { dependsOn(licenseAssets) }
 kotlin { compilerOptions { jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17) } }
 
 dependencies {
+    implementation(project(":core"))
     implementation("androidx.activity:activity-compose:1.10.1")
     implementation(compose.material3)
     implementation(compose.materialIconsExtended)

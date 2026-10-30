@@ -1,8 +1,11 @@
 # iOS port plan
 
 GramPlay starts from Spotygram, whose application is written in Kotlin and
-Compose. Android and desktop currently compile a shared source directory, but
-that directory is not a Kotlin Multiplatform module. There is no iOS app target
+Compose. Android and desktop still compile most of the application from a
+shared JVM source directory. The new `core` module is Kotlin Multiplatform and
+now contains the platform-neutral player contract and playback-order models
+for Android, desktop, and iOS targets. It exports a static `GramPlayCore`
+framework for iPhone and simulator architectures. There is no iOS app target
 yet.
 
 ## Current constraints
@@ -11,9 +14,11 @@ yet.
   concurrency collections and atomics, `java.nio`, `java.net`, `org.json`, and
   JVM gzip and cryptography classes. These need multiplatform equivalents or
   platform interfaces before they can compile for iOS.
-- `Platform` and `Player` already define useful host boundaries. An iOS host
-  still needs implementations for files, preferences, SQLite, networking,
-  metadata, URL handling, background transfers, Telegram client, and audio.
+- `Platform` and `Player` define useful host boundaries. The player contract
+  and playback-order models now live in the Kotlin Multiplatform common source
+  set; an iOS host still needs implementations for files, preferences, SQLite,
+  networking, metadata, URL handling, background transfers, Telegram client,
+  and actual audio.
 - Android currently provides TDLib through a native JNI build. iOS needs a
   separately built and packaged TDLib integration, including its native
   dependencies, lifecycle, and App Store compliance review.
@@ -27,10 +32,10 @@ yet.
 ## Implementation sequence
 
 1. Establish a GramPlay app identity and keep upstream updates reviewable.
-2. Convert the shared code into a Kotlin Multiplatform module without changing
-   Android or desktop behavior.
-3. Move JVM-only operations behind platform interfaces and add common
-   implementations where appropriate.
+2. Move more platform-neutral contracts and domain logic into `core`, keeping
+   Android and desktop behavior intact.
+3. Extract JVM-only operations behind platform interfaces, then move suitable
+   domain logic into common code using multiplatform libraries.
 4. Add an iOS target and implement its storage, database, metadata, networking,
    Telegram/TDLib, and audio adapters.
 5. Add an iOS app target, then verify sign-in, local imports, playback,

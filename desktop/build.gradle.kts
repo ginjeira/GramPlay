@@ -122,6 +122,7 @@ val prepareIcons = tasks.register<JavaExec>("prepareDesktopIcons") {
 }
 
 dependencies {
+    implementation(project(":core"))
     if (targetOs == "windows") components.withModule("org.jetbrains.skiko:skiko-awt") {
         val rendererVersion = id.version
         allVariants {

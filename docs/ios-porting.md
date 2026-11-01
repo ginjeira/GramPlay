@@ -8,14 +8,16 @@ state, storage, preferences and Telegram client interfaces, the library catalog
 and duplicate grouping, track, playlist, source, profile, file and download
 models, audio metadata, playback progress, queue ordering, repeat normalization,
 and playback-speed rules for Android, desktop, and iOS targets. It exports a
-static `GramPlayCore` framework for iPhone and simulator architectures. There
-is no iOS app target yet.
+static `GramPlayCore` framework for iPhone and simulator architectures. A first
+SwiftUI iOS app target imports audio from Files, keeps copies in the app's local
+Music folder, and provides a basic playback queue with previous, play/pause,
+next, and seeking. This is an initial local playback slice, not yet a
+Telegram-connected GramPlay client.
 
 The `iOS core frameworks` GitHub Actions workflow builds the device and Apple
-silicon simulator XCFramework on macOS whenever the core or its build setup
-changes. A successful run publishes `core.xcframework` as a short-lived build
-artifact for Xcode integration. The framework inside the bundle is named
-`GramPlayCore.framework`.
+silicon simulator XCFramework on macOS, links it into the Swift app, builds the
+app for the iOS simulator, and publishes `core.xcframework` as a short-lived
+artifact. The framework inside the bundle is named `GramPlayCore.framework`.
 
 The first native host adapter, `IosPreferences`, stores the shared settings
 contract in an iOS `NSUserDefaults` suite.
@@ -37,9 +39,9 @@ contract in an iOS `NSUserDefaults` suite.
   separately built and packaged TDLib integration, including its native
   dependencies, lifecycle, and App Store compliance review.
 - The current Compose application source depends on Android/JVM APIs and has
-  not been tested with Compose Multiplatform's iOS target. UI sharing should be
-  evaluated after the core source is portable; a native SwiftUI shell remains
-  an alternative.
+  not been tested with Compose Multiplatform's iOS target. The initial app uses
+  SwiftUI; sharing more UI can be evaluated after its host dependencies are
+  portable.
 - iOS background audio, remote controls, file access, privacy disclosures,
   signing, and App Store distribution need dedicated platform work.
 
@@ -50,11 +52,12 @@ contract in an iOS `NSUserDefaults` suite.
    Android and desktop behavior intact.
 3. Extract JVM-only operations behind platform interfaces, then move suitable
    domain logic into common code using multiplatform libraries.
-4. Add an iOS target and implement its storage, database, metadata, networking,
+4. Extend the SwiftUI app and implement its storage, database, metadata, networking,
    Telegram/TDLib, and audio adapters.
-5. Add an iOS app target, then verify sign-in, local imports, playback,
+5. Verify sign-in, local imports, playback,
    background audio, library sync, and lifecycle behavior on a simulator and
    physical device.
 
-This document records the initial assessment. It does not claim that an iOS
-build or any iOS behavior is available yet.
+The current iOS simulator build and local audio playback are an initial slice;
+Telegram sign-in, synchronized library access, background controls, and device
+validation are still outstanding.

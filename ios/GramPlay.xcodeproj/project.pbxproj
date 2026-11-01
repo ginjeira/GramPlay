@@ -1,0 +1,52 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 56;
+	objects = {
+/* Begin PBXBuildFile section */
+		100000000000000000000001 /* GramPlayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200000000000000000000001; };
+		100000000000000000000002 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200000000000000000000002; };
+		100000000000000000000003 /* core.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 200000000000000000000004; };
+/* End PBXBuildFile section */
+/* Begin PBXFileReference section */
+		200000000000000000000001 /* GramPlayApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GramPlayApp.swift; sourceTree = "<group>"; };
+		200000000000000000000002 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
+		200000000000000000000003 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		200000000000000000000004 /* core.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = core.xcframework; path = GramPlay/Frameworks/core.xcframework; sourceTree = "<group>"; };
+		200000000000000000000005 /* GramPlay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GramPlay.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+/* Begin PBXFrameworksBuildPhase section */
+		300000000000000000000001 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (100000000000000000000003,); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXFrameworksBuildPhase section */
+/* Begin PBXGroup section */
+		400000000000000000000001 = {isa = PBXGroup; children = (400000000000000000000002, 400000000000000000000003, 400000000000000000000004,); sourceTree = "<group>"; };
+		400000000000000000000002 /* GramPlay */ = {isa = PBXGroup; children = (200000000000000000000001, 200000000000000000000002, 200000000000000000000003,); path = GramPlay; sourceTree = "<group>"; };
+		400000000000000000000003 /* Frameworks */ = {isa = PBXGroup; children = (200000000000000000000004,); name = Frameworks; sourceTree = "<group>"; };
+		400000000000000000000004 /* Products */ = {isa = PBXGroup; children = (200000000000000000000005,); name = Products; sourceTree = "<group>"; };
+/* End PBXGroup section */
+/* Begin PBXNativeTarget section */
+		500000000000000000000001 /* GramPlay */ = {isa = PBXNativeTarget; buildConfigurationList = 600000000000000000000002; buildPhases = (300000000000000000000002, 300000000000000000000001, 300000000000000000000003,); buildRules = (); dependencies = (); name = GramPlay; productName = GramPlay; productReference = 200000000000000000000005; productType = "com.apple.product-type.application"; };
+/* End PBXNativeTarget section */
+/* Begin PBXProject section */
+		500000000000000000000002 /* Project object */ = {isa = PBXProject; attributes = {BuildIndependentTargetsInParallel = 1; LastUpgradeCheck = 1600; TargetAttributes = {500000000000000000000001 = {CreatedOnToolsVersion = 16.0; }; }; }; buildConfigurationList = 600000000000000000000001; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base,); mainGroup = 400000000000000000000001; productRefGroup = 400000000000000000000004; projectDirPath = ""; projectRoot = ""; targets = (500000000000000000000001,); };
+/* End PBXProject section */
+/* Begin PBXResourcesBuildPhase section */
+		300000000000000000000003 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXResourcesBuildPhase section */
+/* Begin PBXSourcesBuildPhase section */
+		300000000000000000000002 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (100000000000000000000001, 100000000000000000000002,); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXSourcesBuildPhase section */
+/* Begin XCBuildConfiguration section */
+		700000000000000000000001 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {CLANG_ENABLE_MODULES = YES; IPHONEOS_DEPLOYMENT_TARGET = 17.0; SDKROOT = iphoneos; SWIFT_VERSION = 5.0; }; name = Debug; };
+		700000000000000000000002 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {CLANG_ENABLE_MODULES = YES; IPHONEOS_DEPLOYMENT_TARGET = 17.0; SDKROOT = iphoneos; SWIFT_VERSION = 5.0; }; name = Release; };
+		700000000000000000000003 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {CODE_SIGNING_ALLOWED = NO; GENERATE_INFOPLIST_FILE = NO; INFOPLIST_FILE = GramPlay/Info.plist; IPHONEOS_DEPLOYMENT_TARGET = 17.0; LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks",); PRODUCT_BUNDLE_IDENTIFIER = com.ginjeira.GramPlay; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_EMIT_LOC_STRINGS = YES; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2"; }; name = Debug; };
+		700000000000000000000004 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {CODE_SIGNING_ALLOWED = NO; GENERATE_INFOPLIST_FILE = NO; INFOPLIST_FILE = GramPlay/Info.plist; IPHONEOS_DEPLOYMENT_TARGET = 17.0; LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks",); PRODUCT_BUNDLE_IDENTIFIER = com.ginjeira.GramPlay; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_EMIT_LOC_STRINGS = YES; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2"; }; name = Release; };
+/* End XCBuildConfiguration section */
+/* Begin XCConfigurationList section */
+		600000000000000000000001 /* Project configs */ = {isa = XCConfigurationList; buildConfigurations = (700000000000000000000001, 700000000000000000000002,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		600000000000000000000002 /* Target configs */ = {isa = XCConfigurationList; buildConfigurations = (700000000000000000000003, 700000000000000000000004,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+/* End XCConfigurationList section */
+	};
+	rootObject = 500000000000000000000002;
+}

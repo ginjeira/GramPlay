@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "core/**"
+      - "ios/**"
       - "build.gradle.kts"
       - "settings.gradle.kts"
       - "gradle/**"
@@ -14,6 +15,7 @@ on:
   pull_request:
     paths:
       - "core/**"
+      - "ios/**"
       - "build.gradle.kts"
       - "settings.gradle.kts"
       - "gradle/**"
@@ -42,6 +44,18 @@ jobs:
         run: echo "SPOTYGRAM_STATE=$RUNNER_TEMP/gramplay-state" >> "$GITHUB_ENV"
       - name: Assemble iOS XCFramework
         run: ./gradlew :core:assembleCoreDebugXCFramework --no-daemon
+      - name: Prepare Xcode framework
+        run: |
+          mkdir -p ios/GramPlay/Frameworks
+          ditto "$SPOTYGRAM_STATE/build/core/XCFrameworks/debug/core.xcframework" ios/GramPlay/Frameworks/core.xcframework
+      - name: Build iOS app for simulator
+        run: xcodebuild -project ios/GramPlay.xcodeproj -scheme GramPlay -sdk iphonesimulator -configuration Debug -derivedDataPath "$SPOTYGRAM_STATE/ios-derived" CODE_SIGNING_ALLOWED=NO build
+      - uses: actions/upload-artifact@v7
+        with:
+          name: gramplay-ios-simulator-app
+          path: ${{ env.SPOTYGRAM_STATE }}/ios-derived/Build/Products/Debug-iphonesimulator/GramPlay.app
+          if-no-files-found: error
+          retention-days: 7
       - uses: actions/upload-artifact@v7
         with:
           name: gramplay-core-xcframework

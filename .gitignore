@@ -12,3 +12,4 @@ release-private.pem
 *.aab
 *.log
 native/
+ios/GramPlay/Frameworks/core.xcframework/

@@ -24,7 +24,11 @@ class TrackDuplicates(tracks: List<Track>) {
         }
         val owners = HashMap<Any, Int>()
         fun connect(key: Any, index: Int) {
-            val other = owners.putIfAbsent(key, index) ?: return
+            val other = owners[key]
+            if (other == null) {
+                owners[key] = index
+                return
+            }
             val a = root(index)
             val b = root(other)
             parents[maxOf(a, b)] = minOf(a, b)

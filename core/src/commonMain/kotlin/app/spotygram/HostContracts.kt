@@ -29,10 +29,20 @@ interface Preferences {
     }
 }
 
-class Values : LinkedHashMap<String, Any?>() {
-    fun put(key: String, value: String?) { super.put(key, value) }
-    fun put(key: String, value: Int) { super.put(key, value) }
-    fun put(key: String, value: Long) { super.put(key, value) }
+class Values {
+    private val storage = linkedMapOf<String, Any?>()
+
+    val keys: Set<String>
+        get() = storage.keys
+
+    val values: Collection<Any?>
+        get() = storage.values
+
+    fun put(key: String, value: String?) { storage[key] = value }
+    fun put(key: String, value: Int) { storage[key] = value }
+    fun put(key: String, value: Long) { storage[key] = value }
+
+    fun forEach(action: (Map.Entry<String, Any?>) -> Unit) = storage.forEach(action)
 }
 
 interface SqlDatabase : AutoCloseable {

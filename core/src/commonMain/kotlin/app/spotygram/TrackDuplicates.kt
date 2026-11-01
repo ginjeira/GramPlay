@@ -1,7 +1,5 @@
 package app.spotygram
 
-import java.util.Locale
-
 /** Snapshot-only grouping. Never changes catalog records or deletes physical copies. */
 class TrackDuplicates(tracks: List<Track>) {
     private data class Recording(
@@ -32,7 +30,7 @@ class TrackDuplicates(tracks: List<Track>) {
             parents[maxOf(a, b)] = minOf(a, b)
         }
         val whitespace = Regex("\\s+")
-        fun normalize(value: String) = value.trim().lowercase(Locale.ROOT).replace(whitespace, " ")
+        fun normalize(value: String) = value.trim().lowercase().replace(whitespace, " ")
         tracks.forEachIndexed { index, track ->
             if (track.fileKey.isNotEmpty()) connect("file:${track.fileKey}", index)
             if (track.path.isNotEmpty()) connect("path:${track.path}", index)

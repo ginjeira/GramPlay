@@ -47,3 +47,40 @@ data class FileState(
 )
 
 data class DownloadState(val trackId: String = "", val progress: Float = 0f, val queued: Int = 0)
+
+data class LibraryState(
+    val tracks: List<Track> = emptyList(),
+    val sources: List<Source> = emptyList(),
+    val playlists: List<Playlist> = emptyList(),
+    val profiles: List<UserProfile> = emptyList(),
+) {
+    val byId by lazy { tracks.associateBy { it.id } }
+    val duplicates by lazy { TrackDuplicates(tracks) }
+    val localGroups by lazy { tracks.filter { it.local && !it.temporary }.groupBy { it.path } }
+    val localTracks by lazy { localView(tracks) }
+    val localSize by lazy { localTracks.sumOf { it.size } }
+    val localRecordingCount by lazy {
+        localTracks.asSequence().map { duplicates.key(it.id) }.distinct().count()
+    }
+    val allSources by lazy { sources + profiles.filter { it.selected }.map { it.source() } }
+    val sourceCounts by lazy {
+        tracks.asSequence().filter { it.profileUserId == 0L }.groupingBy { it.chatId }.eachCount()
+    }
+    val playlistCounts by lazy {
+        playlists.associate { playlist -> playlist.id to playlist.tracks.count { it in byId } }
+    }
+
+    fun localDisplay(track: Track): Track {
+        val liked = localGroups[track.path]?.any { it.liked } ?: track.liked
+        return if (liked == track.liked) track else track.copy(liked = liked)
+    }
+
+    // Message references remain intact. Only the local-file view groups their shared paths.
+    fun localView(candidates: List<Track>): List<Track> {
+        val seen = HashSet<String>()
+        return candidates.mapNotNull { track ->
+            if (track.local && !track.temporary && seen.add(track.path)) localDisplay(track)
+            else null
+        }
+    }
+}

@@ -31,7 +31,6 @@ jobs:
     timeout-minutes: 30
     env:
       JAVA_TOOL_OPTIONS: "-XX:ActiveProcessorCount=2"
-      SPOTYGRAM_STATE: ${{ runner.temp }}/gramplay-state
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-java@v6
@@ -39,5 +38,7 @@ jobs:
           distribution: temurin
           java-version: "21"
       - uses: gradle/actions/setup-gradle@v6
+      - name: Set private build state
+        run: echo "SPOTYGRAM_STATE=$RUNNER_TEMP/gramplay-state" >> "$GITHUB_ENV"
       - name: Build iPhone and Apple silicon simulator frameworks
         run: ./gradlew :core:linkDebugFrameworkIosArm64 :core:linkDebugFrameworkIosSimulatorArm64 --no-daemon

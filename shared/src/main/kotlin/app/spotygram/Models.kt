@@ -18,34 +18,7 @@ val Source.displayTitle: String
 val ChatChoice.displayTitle: String
     get() = chatTitle(id, title)
 
-data class AuthState(
-    val type: String = "welcome",
-    val detail: String = "",
-    val busy: Boolean = false,
-    val error: String = "",
-    val editingPhone: Boolean = false,
-    val phoneNumber: String = "",
-    val nextCodeType: String = "",
-    val resendAt: Long = 0,
-    val codeLink: String = "",
-    val codeLength: Int = 0,
-) {
-    fun resendSeconds(): Int =
-        ((resendAt - System.nanoTime() + 999_999_999L) / 1_000_000_000L).coerceAtLeast(0).toInt()
-
-    val canChangePhone: Boolean
-        get() =
-            type in
-                listOf(
-                    "authorizationStateWaitCode",
-                    "authorizationStateWaitPassword",
-                    "authorizationStateWaitEmailAddress",
-                    "authorizationStateWaitEmailCode",
-                    "authorizationStateWaitRegistration",
-                    "authorizationStateWaitPremiumPurchase",
-                    "authorizationStateWaitOtherDeviceConfirmation",
-                )
-}
+fun AuthState.resendSeconds(): Int = resendSeconds(System.nanoTime())
 
 internal fun validAudioCopy(path: String, expectedSize: Long): Boolean {
     if (path.isEmpty()) return false

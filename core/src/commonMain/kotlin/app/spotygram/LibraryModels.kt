@@ -48,6 +48,35 @@ data class FileState(
 
 data class DownloadState(val trackId: String = "", val progress: Float = 0f, val queued: Int = 0)
 
+data class AuthState(
+    val type: String = "welcome",
+    val detail: String = "",
+    val busy: Boolean = false,
+    val error: String = "",
+    val editingPhone: Boolean = false,
+    val phoneNumber: String = "",
+    val nextCodeType: String = "",
+    val resendAt: Long = 0,
+    val codeLink: String = "",
+    val codeLength: Int = 0,
+) {
+    fun resendSeconds(nowNanos: Long): Int =
+        ((resendAt - nowNanos + 999_999_999L) / 1_000_000_000L).coerceAtLeast(0).toInt()
+
+    val canChangePhone: Boolean
+        get() =
+            type in
+                listOf(
+                    "authorizationStateWaitCode",
+                    "authorizationStateWaitPassword",
+                    "authorizationStateWaitEmailAddress",
+                    "authorizationStateWaitEmailCode",
+                    "authorizationStateWaitRegistration",
+                    "authorizationStateWaitPremiumPurchase",
+                    "authorizationStateWaitOtherDeviceConfirmation",
+                )
+}
+
 data class LibraryState(
     val tracks: List<Track> = emptyList(),
     val sources: List<Source> = emptyList(),

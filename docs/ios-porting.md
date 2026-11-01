@@ -13,8 +13,9 @@ is no iOS app target yet.
 
 The `iOS core frameworks` GitHub Actions workflow builds the device and Apple
 silicon simulator XCFramework on macOS whenever the core or its build setup
-changes. A successful run publishes `GramPlayCore.xcframework` as a short-lived
-build artifact for Xcode integration.
+changes. A successful run publishes `core.xcframework` as a short-lived build
+artifact for Xcode integration. The framework inside the bundle is named
+`GramPlayCore.framework`.
 
 The first native host adapter, `IosPreferences`, stores the shared settings
 contract in an iOS `NSUserDefaults` suite.

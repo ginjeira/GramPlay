@@ -45,6 +45,6 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: gramplay-core-xcframework
-          path: core/build/XCFrameworks/**/*.xcframework
+          path: ${{ env.SPOTYGRAM_STATE }}/build/core/XCFrameworks/debug/core.xcframework
           if-no-files-found: error
           retention-days: 7

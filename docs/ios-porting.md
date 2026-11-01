@@ -15,6 +15,9 @@ The `iOS core frameworks` GitHub Actions workflow builds the device and Apple
 silicon simulator frameworks on macOS whenever the core or its build setup
 changes.
 
+The first native host adapter, `IosPreferences`, stores the shared settings
+contract in an iOS `NSUserDefaults` suite.
+
 ## Current constraints
 
 - Shared application code uses JVM APIs including `java.io.File`, Java
@@ -24,9 +27,10 @@ changes.
 - `Platform` and `Player` define useful host boundaries. Playback contracts,
   storage, preferences and Telegram interfaces, state and catalog models,
   duplicate-grouping logic, audio metadata, progress, queue ordering, and
-  playback-speed rules now live in the Kotlin Multiplatform common source set;
-  an iOS host still needs implementations for files, SQLite, networking, URL
-  handling, background transfers, Telegram client, and actual audio.
+  playback-speed rules now live in the Kotlin Multiplatform common source set.
+  iOS preferences use `NSUserDefaults`; the host still needs implementations
+  for files, SQLite, networking, URL handling, background transfers, Telegram
+  client, and actual audio.
 - Android currently provides TDLib through a native JNI build. iOS needs a
   separately built and packaged TDLib integration, including its native
   dependencies, lifecycle, and App Store compliance review.

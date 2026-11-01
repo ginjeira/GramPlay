@@ -1,4 +1,5 @@
 import AVFoundation
+import MediaPlayer
 import SwiftUI
 import UniformTypeIdentifiers
 
@@ -15,6 +16,7 @@ private final class AudioLibrary: NSObject, ObservableObject, AVAudioPlayerDeleg
     @Published private(set) var isPlaying = false
     @Published private(set) var currentTime: TimeInterval = 0
     @Published private(set) var duration: TimeInterval = 0
+    @Published private(set) var playbackRate: Float = 1
     @Published var message: String?
 
     private var player: AVAudioPlayer?
@@ -27,6 +29,7 @@ private final class AudioLibrary: NSObject, ObservableObject, AVAudioPlayerDeleg
         super.init()
         try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
         loadSavedFiles()
+        configureRemoteCommands()
     }
 
     func importFiles(_ urls: [URL]) {
@@ -54,12 +57,15 @@ private final class AudioLibrary: NSObject, ObservableObject, AVAudioPlayerDeleg
             let next = try AVAudioPlayer(contentsOf: entry.url)
             next.delegate = self
             next.prepareToPlay()
+            next.enableRate = true
+            next.rate = playbackRate
             player = next
             currentID = entry.id
             duration = next.duration
             currentTime = 0
             isPlaying = next.play()
             startTimer()
+            updateNowPlaying()
         } catch {
             message = "Não foi possível reproduzir este ficheiro: \(error.localizedDescription)"
         }
@@ -69,6 +75,13 @@ private final class AudioLibrary: NSObject, ObservableObject, AVAudioPlayerDeleg
         guard let player else { return }
         if player.isPlaying { player.pause(); isPlaying = false }
         else { isPlaying = player.play() }
+        updateNowPlaying()
+    }
+
+    func setPlaybackRate(_ rate: Float) {
+        playbackRate = min(max(rate, 0.5), 2)
+        player?.rate = playbackRate
+        updateNowPlaying()
     }
 
     func skip(by offset: Int) {
@@ -88,6 +101,7 @@ private final class AudioLibrary: NSObject, ObservableObject, AVAudioPlayerDeleg
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         isPlaying = false
         currentTime = duration
+        updateNowPlaying()
     }
 
     private func loadSavedFiles() {
@@ -112,8 +126,49 @@ private final class AudioLibrary: NSObject, ObservableObject, AVAudioPlayerDeleg
                 guard let self, let player = self.player else { return }
                 self.currentTime = player.currentTime
                 self.isPlaying = player.isPlaying
+                self.updateNowPlaying()
             }
         }
+    }
+
+    private func configureRemoteCommands() {
+        let commands = MPRemoteCommandCenter.shared()
+        commands.playCommand.addTarget { [weak self] _ in
+            Task { @MainActor in
+                guard let self else { return }
+                if !self.isPlaying { self.togglePlayback() }
+            }
+            return .success
+        }
+        commands.pauseCommand.addTarget { [weak self] _ in
+            Task { @MainActor in
+                guard let self else { return }
+                if self.isPlaying { self.togglePlayback() }
+            }
+            return .success
+        }
+        commands.nextTrackCommand.addTarget { [weak self] _ in
+            Task { @MainActor in self?.skip(by: 1) }
+            return .success
+        }
+        commands.previousTrackCommand.addTarget { [weak self] _ in
+            Task { @MainActor in self?.skip(by: -1) }
+            return .success
+        }
+    }
+
+    private func updateNowPlaying() {
+        guard currentID != nil else {
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
+            return
+        }
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = [
+            MPMediaItemPropertyTitle: currentTitle,
+            MPMediaItemPropertyArtist: "GramPlay",
+            MPMediaItemPropertyPlaybackDuration: duration,
+            MPNowPlayingInfoPropertyElapsedPlaybackTime: currentTime,
+            MPNowPlayingInfoPropertyPlaybackRate: isPlaying ? playbackRate : 0,
+        ]
     }
 }
 
@@ -175,6 +230,17 @@ struct LibraryView: View {
                 Button { library.togglePlayback() } label: { Image(systemName: library.isPlaying ? "pause.fill" : "play.fill").font(.title2).frame(width: 44) }
                     .disabled(library.currentID == nil)
                 Button { library.skip(by: 1) } label: { Image(systemName: "forward.end.fill") }
+                Menu {
+                    ForEach([0.5, 0.75, 1.0, 1.25, 1.5, 2.0], id: \.self) { rate in
+                        Button("\(rate.formatted(.number.precision(.fractionLength(0...2))))×") {
+                            library.setPlaybackRate(Float(rate))
+                        }
+                    }
+                } label: {
+                    Text("\(library.playbackRate.formatted(.number.precision(.fractionLength(0...2))))×")
+                        .font(.caption.weight(.semibold))
+                        .frame(minWidth: 34)
+                }
             }
             Slider(value: Binding(get: { library.currentTime }, set: library.seek), in: 0...max(library.duration, 1))
                 .tint(.green)

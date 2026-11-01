@@ -11,8 +11,8 @@ and playback-speed rules for Android, desktop, and iOS targets. It exports a
 static `GramPlayCore` framework for iPhone and simulator architectures. A first
 SwiftUI iOS app target imports audio from Files, keeps copies in the app's local
 Music folder, and provides a basic playback queue with previous, play/pause,
-next, and seeking. This is an initial local playback slice, not yet a
-Telegram-connected GramPlay client.
+next, seeking, playback speed, and lock-screen/headphone controls. This is an
+initial local playback slice, not yet a Telegram-connected GramPlay client.
 
 The `iOS core frameworks` GitHub Actions workflow builds the device and Apple
 silicon simulator XCFramework on macOS, links it into the Swift app, builds the

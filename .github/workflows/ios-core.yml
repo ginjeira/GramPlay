@@ -40,5 +40,11 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
       - name: Set private build state
         run: echo "SPOTYGRAM_STATE=$RUNNER_TEMP/gramplay-state" >> "$GITHUB_ENV"
-      - name: Build iPhone and Apple silicon simulator frameworks
-        run: ./gradlew :core:linkDebugFrameworkIosArm64 :core:linkDebugFrameworkIosSimulatorArm64 --no-daemon
+      - name: Assemble iOS XCFramework
+        run: ./gradlew :core:assembleGramPlayCoreDebugXCFramework --no-daemon
+      - uses: actions/upload-artifact@v7
+        with:
+          name: gramplay-core-xcframework
+          path: core/build/XCFrameworks/debug/GramPlayCore.xcframework
+          if-no-files-found: error
+          retention-days: 7

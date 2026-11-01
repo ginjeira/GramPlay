@@ -1,8 +1,11 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
+
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
 }
 
 kotlin {
+    val iosFramework = XCFramework()
     jvm {
         compilerOptions {
             jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
@@ -12,6 +15,7 @@ kotlin {
         target.binaries.framework {
             baseName = "GramPlayCore"
             isStatic = true
+            iosFramework.add(this)
         }
     }
 }

@@ -12,8 +12,9 @@ static `GramPlayCore` framework for iPhone and simulator architectures. There
 is no iOS app target yet.
 
 The `iOS core frameworks` GitHub Actions workflow builds the device and Apple
-silicon simulator frameworks on macOS whenever the core or its build setup
-changes.
+silicon simulator XCFramework on macOS whenever the core or its build setup
+changes. A successful run publishes `GramPlayCore.xcframework` as a short-lived
+build artifact for Xcode integration.
 
 The first native host adapter, `IosPreferences`, stores the shared settings
 contract in an iOS `NSUserDefaults` suite.
